@@ -10,7 +10,7 @@ Another technique called soft update is used: Instead of copying the weights of 
 
 ### Hyperparameters
 - BUFFER_SIZE = 1e6, replay buffer size
-- BATCH_SIZE = 512, minibatch size
+- BATCH_SIZE = 256, minibatch size
 - GAMMA = 0.99, discount factor
 - TAU = 1e-3, for soft update of target parameters
 - LR_ACTOR = 1e-4, learning rate of the actor 
