@@ -3,7 +3,7 @@ import random
 import copy
 from collections import namedtuple, deque
 
-from model import Actor, Critic
+from ddpg_model import Actor, Critic
 
 import torch
 import torch.nn.functional as F
@@ -15,18 +15,18 @@ GAMMA = 0.99            # discount factor
 TAU = 1e-3              # for soft update of target parameters
 LR_ACTOR = 1e-4         # learning rate of the actor
 LR_CRITIC = 1e-3        # learning rate of the critic
-WEIGHT_DECAY = 1e-4        # L2 weight decay
+WEIGHT_DECAY = 0        # L2 weight decay
 
-#device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-device = torch.device("cpu")
-
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+# device = torch.device("cpu")
+print("using device:", device)
 
 class Agent():
     """Interacts with and learns from the environment."""
 
     def __init__(self, state_size, action_size, random_seed, num_agents):
         """Initialize an Agent object.
-
+        
         Params
         ======
             state_size (int): dimension of each state
@@ -59,21 +59,25 @@ class Agent():
         self.noise = OUNoise(action_size, random_seed)
 
         # Replay memory
-        self.timesteps = 0
         self.memory = ReplayBuffer(
             action_size, BUFFER_SIZE, BATCH_SIZE, random_seed)
 
+        # Initialize timesteps
+        self.timesteps = 0
+
     def step(self, state, action, reward, next_state, done):
         """Save experience in replay memory, and use random sample from buffer to learn."""
-        self.timesteps += 1
         # Save experience / reward
         for i in range(self.num_agents):
             self.memory.add(state[i], action[i],
                             reward[i], next_state[i], done[i])
-
+        self.timesteps += 1
+        self.timesteps %= 20
+        # print("timesteps:", self.timesteps)
         # Learn, if enough samples are available in memory
-        if len(self.memory) > BATCH_SIZE and self.timesteps % 20 == 0:
-            for i in range(20):
+        if len(self.memory) > BATCH_SIZE and self.timesteps == 0:
+            # print("updating now!")
+            for _ in range(10):
                 experiences = self.memory.sample()
                 self.learn(experiences, GAMMA)
 
@@ -118,6 +122,7 @@ class Agent():
         critic_loss = F.mse_loss(Q_expected, Q_targets)
         # Minimize the loss
         self.critic_optimizer.zero_grad()
+        torch.nn.utils.clip_grad_norm_(self.critic_local.parameters(), 1)
         critic_loss.backward()
         self.critic_optimizer.step()
 
@@ -151,13 +156,13 @@ class Agent():
 class OUNoise:
     """Ornstein-Uhlenbeck process."""
 
-    def __init__(self, size, seed, mu=0.0, theta=0.15, sigma=0.2):
+    def __init__(self, size, seed, mu=0.0, theta=0.3, sigma=0.1):
         """Initialize parameters and noise process."""
         self.mu = mu * np.ones(size)
         self.theta = theta
         self.sigma = sigma
-        self.seed = random.seed(seed)
         self.size = size
+        self.seed = random.seed(seed)
         self.reset()
 
     def reset(self):

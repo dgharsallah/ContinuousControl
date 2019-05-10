@@ -9,57 +9,62 @@ To stabilize the learning, the model implements Fixed targets and Experience Rep
 Another technique called soft update is used: Instead of copying the weights of the online network to make the target network we add 99.99% of the target network weights are added to 0.01% of the online network weights.
 
 ### Hyperparameters
-- BUFFER_SIZE = 1000000, replay buffer size
-- BATCH_SIZE = 128, minibatch size
+- BUFFER_SIZE = 1e6, replay buffer size
+- BATCH_SIZE = 512, minibatch size
 - GAMMA = 0.99, discount factor
-- TAU = 0.001, for soft update of target parameters
-- LR_ACTOR = 0.0001, learning rate of the actor 
-- LR_CRITIC = 0.004, learning rate of the critic
-- WEIGHT_DECAY = 0.0001, L2 weight decay
-
+- TAU = 1e-3, for soft update of target parameters
+- LR_ACTOR = 1e-4, learning rate of the actor 
+- LR_CRITIC = 1e-3, learning rate of the critic
+- WEIGHT_DECAY = 0, L2 weight decay
 
 ### Actor Neural Network
-The neural network defined in model.py has 2 fully connected layers.
-A layer of size state_size * 256 with a Relu activation function and a second layer of size 256 * action_size with a Tanh activation function.
+The neural network defined in model.py has 3 fully connected layers.
+- A first layer of size state_size with a Relu activation function
+- A second layer of size 256 with a Relu activation function
+- A third layer of size action_size with a Tanh activation function.
 
 ### Critic Neural Network
 The neural network defined also in model.py has 4 fully connected layers.
-- A layer of size state_size * 256 with a leaky_relu activation function
-- A layer of size (action_size + 256) * 256 with leaky relu activation function
-- A layer of size 256 * 128 with leaky leaky_relu activation function
-- A layer of size 128 * 1 with no activation function
+- A layer of size state_size with a leaky_relu activation function
+- A layer of size 256 with leaky_relu activation function
+- A layer of size 256 with leaky_relu activation function
+- A layer of size 1 with no activation function
 
 ## Plot of rewards
 
 ![Reward Plot](scores.png)
 
 ```
-Episode 1	Average Score: 0.02
-Episode 2	Average Score: 0.02
-Episode 3	Average Score: 0.04
-Episode 4	Average Score: 0.05
-Episode 5	Average Score: 0.09
-Episode 6	Average Score: 0.13
+
+Episode 1	Average Score: 0.535
+Episode 2	Average Score: 0.486
+Episode 3	Average Score: 0.389
+Episode 4	Average Score: 0.468
+Episode 5	Average Score: 0.506
+Episode 6	Average Score: 0.499
 .
 .
-Episode 98	Average Score: 4.88
-Episode 99	Average Score: 4.93
+.
+Episode 122	Average Score: 10.920
+Episode 123	Average Score: 11.103
+Episode 124	Average Score: 11.291
+Episode 125	Average Score: 11.449
+Episode 126	Average Score: 11.625
+Episode 127	Average Score: 11.815
+Episode 128	Average Score: 12.007
 .
 .
-Episode 198	Average Score: 14.40
-Episode 199	Average Score: 14.49
 .
-.
-Episode 298	Average Score: 23.99
-Episode 299	Average Score: 24.09
-.
-.
-Episode 358	Average Score: 29.95
-Episode 359	Average Score: 30.05
-Enviroment solved in @ i_episode=359, w/ avg_score=30.05
+Episode 286	Average Score: 29.809
+Episode 287	Average Score: 29.866
+Episode 288	Average Score: 29.926
+Episode 289	Average Score: 29.983
+Episode 290	Average Score: 30.033
+Environment solved in 290 episodes!
+
 
 ```
 
 ## Ideas for Future Work
-We can improve this algorithm using [D4PG](https://openreview.net/forum?id=SyZipzbCb)
+We can improve this algorithm using [D4PG](https://openreview.net/forum?id=SyZipzbCb) or [PPO](https://arxiv.org/pdf/1707.06347) that is usually very good in continuous tasks.
 
