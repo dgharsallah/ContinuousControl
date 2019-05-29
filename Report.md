@@ -72,3 +72,4 @@ We can improve this algorithm using [D4PG](https://openreview.net/forum?id=SyZip
 | Plot | Hyperparameters | Interpretation | Code |
 | --- | --- | --- | --- |
 | ![Reward Plot](https://github.com/dhaw92/ContinuousControl/blob/experiment-1/scores.png) |  | The agent learns correctly and converges rapidly in 60 episodes | [link](https://github.com/dhaw92/ContinuousControl/tree/experiment-1)
+| ![Reward Plot](https://github.com/dhaw92/ContinuousControl/blob/experiment-2/scores.png) | Same as experiment 1, we just removed the critic clipping line | The agent learns correctly and converges rapidly in 60 episodes | [link](https://github.com/dhaw92/ContinuousControl/tree/experiment-2)
