@@ -68,3 +68,7 @@ Environment solved in 290 episodes!
 ## Ideas for Future Work
 We can improve this algorithm using [D4PG](https://openreview.net/forum?id=SyZipzbCb) or [PPO](https://arxiv.org/pdf/1707.06347) that is usually very good in continuous tasks.
 
+## Experiments
+| Plot | Hyperparameters | Interpretation | Code |
+| --- | --- | --- | --- |
+| ![Reward Plot](https://github.com/dhaw92/ContinuousControl/blob/experiment-1/scores.png) |  | The agent learns correctly and converges rapidly in 60 episodes | [link](https://github.com/dhaw92/ContinuousControl/tree/experiment-1)
