@@ -75,11 +75,11 @@ class Agent():
         self.timesteps %= 20
         # print("timesteps:", self.timesteps)
         # Learn, if enough samples are available in memory
-        if len(self.memory) > BATCH_SIZE and self.timesteps == 0:
+        if len(self.memory) > BATCH_SIZE:
             # print("updating now!")
-            for _ in range(10):
-                experiences = self.memory.sample()
-                self.learn(experiences, GAMMA)
+            #for _ in range(10):
+            experiences = self.memory.sample()
+            self.learn(experiences, GAMMA)
 
     def act(self, states, add_noise=True):
         """Returns actions for given state as per current policy."""
