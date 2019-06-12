@@ -30,41 +30,10 @@ The neural network defined also in model.py has 4 fully connected layers.
 - A layer of size 256 with leaky_relu activation function
 - A layer of size 1 with no activation function
 
-## Plot of rewards
+## Plots
 
 ![Reward Plot](scores.png)
-
-```
-
-Episode 1	Average Score: 0.535
-Episode 2	Average Score: 0.486
-Episode 3	Average Score: 0.389
-Episode 4	Average Score: 0.468
-Episode 5	Average Score: 0.506
-Episode 6	Average Score: 0.499
-.
-.
-.
-Episode 122	Average Score: 10.920
-Episode 123	Average Score: 11.103
-Episode 124	Average Score: 11.291
-Episode 125	Average Score: 11.449
-Episode 126	Average Score: 11.625
-Episode 127	Average Score: 11.815
-Episode 128	Average Score: 12.007
-.
-.
-.
-Episode 286	Average Score: 29.809
-Episode 287	Average Score: 29.866
-Episode 288	Average Score: 29.926
-Episode 289	Average Score: 29.983
-Episode 290	Average Score: 30.033
-Environment solved in 290 episodes!
-
-
-```
-
+![Actor Critic Plot](actor_critic_loss.png)
 ## Ideas for Future Work
 We can improve this algorithm using [D4PG](https://openreview.net/forum?id=SyZipzbCb) or [PPO](https://arxiv.org/pdf/1707.06347) that is usually very good in continuous tasks.
 

@@ -4,6 +4,7 @@ import copy
 from collections import namedtuple, deque
 
 from ddpg_model import Actor, Critic
+from tensorboardX import SummaryWriter
 
 import torch
 import torch.nn.functional as F
@@ -18,7 +19,7 @@ LR_CRITIC = 1e-4        # learning rate of the critic
 WEIGHT_DECAY = 0        # L2 weight decay
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-#device = torch.device("cpu")
+writer = SummaryWriter()
 
 class Agent():
     """Interacts with and learns from the environment."""
@@ -37,6 +38,7 @@ class Agent():
         self.action_size = action_size
         self.num_agents = num_agents
         self.seed = random.seed(random_seed)
+        self.num_iter = 0
 
         # Actor Network (w/ Target Network)
         self.actor_local = Actor(state_size, action_size, random_seed).to(device)
@@ -56,6 +58,7 @@ class Agent():
     
     def step(self, state, action, reward, next_state, done):
         """Save experience in replay memory, and use random sample from buffer to learn."""
+        self.num_iter += 1
         # Save experience / reward
         for i in range(self.num_agents):
             self.memory.add(state[i], action[i], reward[i], next_state[i], done[i])
@@ -104,6 +107,7 @@ class Agent():
         # Compute critic loss
         Q_expected = self.critic_local(states, actions)
         critic_loss = F.mse_loss(Q_expected, Q_targets)
+        writer.add_scalar('critic_loss', critic_loss, self.num_iter)
         # Minimize the loss
         self.critic_optimizer.zero_grad()
         critic_loss.backward()
@@ -113,6 +117,7 @@ class Agent():
         # Compute actor loss
         actions_pred = self.actor_local(states)
         actor_loss = -self.critic_local(states, actions_pred).mean()
+        writer.add_scalar('actor_loss', actor_loss, self.num_iter)
         # Minimize the loss
         self.actor_optimizer.zero_grad()
         actor_loss.backward()
