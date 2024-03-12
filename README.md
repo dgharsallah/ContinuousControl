@@ -18,7 +18,7 @@ The observation space consists of 33 variables corresponding to position, rotati
 Each action is a vector with 4 numbers, corresponding to torque applicable to two joints. Every entry in the action vector should be a number between -1 and 1.
 
 ### Getting Started
-1. Clone the repo `git clone https://github.com/dhaw92/ContinuousControl`
+1. Clone the repo `git clone https://github.com/dgharsallah/ContinuousControl`
 2. Create a conda environment and install the required packages
 ```bash
 conda create --name cc python=3.6
